@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { db } from "~/server/db";
 
 const mockURLs = [
  "https://utfs.io/f/232ef12b-a07a-4a8f-8309-1b97e5df28b2-krr3f8.png",
@@ -14,10 +15,21 @@ const mockImages = mockURLs.map((url, index) => ({
   }
 ));
 
-export default function HomePage() {
+export default async function HomePage() {
+  // this function now only runs on the server -> console logs wont show in the browser
+  const posts = await db.query.posts.findMany();
   return (
     <main className="">
       <div className="flex flex-wrap gap-4">
+        {
+          posts.map(post => (
+            <div key={post.id} className="w-48">
+              <Link href={`/posts/${post.id}`}>
+                  {post.name}
+              </Link>
+            </div>
+          ))
+        }
         {
           [...mockImages, ...mockImages, ...mockImages].map(image => (
             <div key={image.id} className="w-48">
