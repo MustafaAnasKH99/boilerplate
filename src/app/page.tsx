@@ -11,31 +11,17 @@ const mockURLs = [
  "https://utfs.io/f/dfe42d58-c6fa-4bf4-b7ab-3f72f915efde-4j1ge8.png" 
 ]
 
-const mockImages = mockURLs.map((url, index) => ({
-  id: index + 1,
-  url
-  }
-));
-
 export default async function HomePage() {
   // this function now only runs on the server -> console logs wont show in the browser
-  const posts = await db.query.posts.findMany();
+  const images = await db.query.images.findMany();
   return (
     <main className="">
       <div className="flex flex-wrap gap-4">
         {
-          posts.map(post => (
-            <div key={post.id} className="w-48">
-              <Link href={`/posts/${post.id}`}>
-                  {post.name}
-              </Link>
-            </div>
-          ))
-        }
-        {
-          [...mockImages, ...mockImages, ...mockImages].map(image => (
+          [...images, ...images, ...images].map(image => (
             <div key={image.id} className="w-48">
               <img src={image.url} alt="image" />
+              <div>{image.name}</div>
             </div>
           ))
         }
